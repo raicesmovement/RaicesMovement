@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raíces Movement — Caminatas Comunitarias</title>
+  <meta name="description" content="Raíces Movement is a bilingual walking community rooted in wellness, connection, and reflection. Biweekly walks at La Mirada Creek Park. All are welcome." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --terra: #C4724A;
+      --terra-light: #E8A882;
+      --terra-dark: #7A3F22;
+      --sage: #5A7A5C;
+      --sage-light: #8FAE91;
+      --sage-dark: #2E4A30;
+      --cream: #F5EDD8;
+      --cream-dark: #E8D9BC;
+      --sand: #D4B896;
+      --ink: #2A1F14;
+      --ink-light: #5C4A35;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='0.4' fill='%23C4724A' opacity='0.04'/%3E%3Ccircle cx='3' cy='3' r='0.4' fill='%235A7A5C' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245, 237, 216, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sand);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--terra);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--terra); }
+
+    /* PAGE WRAPPER */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, transparent, var(--terra));
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 96px);
+      font-weight: 700;
+      line-height: 0.9;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .h1-italic { font-style: italic; color: var(--terra); }
+    .hero-tagline {
+      font-size: 16px;
+      font-style: italic;
+      color: var(--ink-light);
+      margin: 22px auto 0;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* LAUNCH BANNER */
+    .launch-banner {
+      background: var(--terra);
+      border-radius: 12px;
+      padding: 22px 32px;
+      margin: 40px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .launch-date {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.2;
+    }
+    .launch-date span {
+      display: block;
+      font-size: 11px;
+      font-family: 'Source Serif 4', serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terra-light);
+      margin-bottom: 5px;
+    }
+    .launch-detail {
+      font-size: 14px;
+      color: var(--cream);
+      opacity: 0.85;
+      text-align: right;
+      line-height: 1.9;
+    }
+
+    /* INFO STRIP */
+    .info-strip {
+      background: var(--cream-dark);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+    }
+    .info-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 5px;
+    }
+    .info-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 52px 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--sand); }
+    .divider-glyph {
+      color: var(--terra);
+      font-size: 18px;
+      font-family: 'Playfair Display', serif;
+      opacity: 0.6;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    /* HEADINGS */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    h2 em { font-style: italic; color: var(--terra); }
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+      margin-top: 28px;
+    }
+
+    /* BODY */
+    p {
+      font-size: 15px;
+      color: var(--ink-light);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    p.bilingual {
+      font-style: italic;
+      font-size: 14px;
+      color: var(--sage-dark);
+    }
+
+    /* TWO COL */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+
+    /* LAND BLOCK */
+    .land-block {
+      border-left: 3px solid var(--sage);
+      padding: 24px 28px;
+      background: #EFF4F0;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 56px;
+    }
+    .land-block p { color: var(--sage-dark); }
+
+    /* QUOTE */
+    .quote-block {
+      text-align: center;
+      padding: 52px 32px;
+      margin-bottom: 56px;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3.5vw, 30px);
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.4;
+      max-width: 620px;
+      margin: 0 auto 16px;
+    }
+    .quote-attr {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terra);
+    }
+
+    /* SEASONS */
+    .seasons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 56px;
+    }
+    .season-card {
+      border-radius: 10px;
+      padding: 24px 16px;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+    .season-card.winter { background: #EFF4F0; border-color: #C2D4C4; }
+    .season-card.spring { background: #FDF0E8; border-color: #E8C0A0; }
+    .season-card.summer { background: #FDF7EC; border-color: #E8D4A0; }
+    .season-card.fall   { background: #F5EFE0; border-color: #D4C090; }
+    .season-symbol { font-size: 30px; margin-bottom: 10px; display: block; }
+    .season-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+    .season-theme { font-size: 12px; font-style: italic; color: var(--ink-light); line-height: 1.4; }
+
+    /* WALK FLOW */
+    .flow-list { list-style: none; margin-bottom: 56px; }
+    .flow-list li {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .flow-list li:last-child { border-bottom: none; }
+    .flow-time {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--terra);
+      min-width: 58px;
+      padding-top: 2px;
+    }
+    .flow-desc { font-size: 15px; color: var(--ink); line-height: 1.5; font-weight: 400; }
+    .flow-sub { font-size: 13px; font-style: italic; color: var(--ink-light); margin-top: 3px; }
+
+    /* TRAIL ADVENTURE */
+    .adventure-block {
+      background: #FDF0E8;
+      border: 1px solid #E8C0A0;
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
+    }
+    .adventure-block h3 { margin-top: 0; color: var(--terra-dark); }
+    .adventure-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .adventure-option {
+      background: white;
+      border-radius: 8px;
+      padding: 16px 18px;
+      border: 1px solid var(--sand);
+    }
+    .adventure-option-title {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 6px;
+    }
+    .adventure-option p { font-size: 14px; margin: 0; }
+
+    /* COMMITTEE */
+    .committee-card {
+      background: var(--ink);
+      border-radius: 14px;
+      padding: 44px 40px;
+      margin-bottom: 56px;
+    }
+    .committee-card .section-label { color: var(--terra-light); }
+    .committee-card h2 { color: var(--cream); }
+    .committee-card > p { color: #C4A882; }
+    .committee-list { list-style: none; margin: 20px 0; }
+    .committee-list li {
+      font-size: 14px;
+      color: #C4A882;
+      padding: 8px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .committee-list li:last-child { border-bottom: none; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra-light); margin-top: 8px; flex-shrink: 0; }
+    .committee-note { font-size: 14px; font-style: italic; color: #C4A882; margin: 0; }
+
+    /* SAFETY */
+    .safety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .safety-card {
+      background: var(--cream-dark);
+      border-radius: 10px;
+      padding: 20px 22px;
+      border: 1px solid var(--sand);
+    }
+    .safety-title {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 7px;
+    }
+    .safety-card p { font-size: 14px; margin: 0; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 56px 0 72px;
+      border-top: 1px solid var(--sand);
+      margin-top: 24px;
+    }
+    .footer-principle {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .footer-sub { font-size: 13px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .two-col { grid-template-columns: 1fr; gap: 32px; }
+      .seasons-grid { grid-template-columns: 1fr 1fr; }
+      .safety-grid { grid-template-columns: 1fr; }
+      .adventure-options { grid-template-columns: 1fr; }
+      .launch-banner { flex-direction: column; text-align: center; }
+      .launch-detail { text-align: center; }
+      nav { justify-content: center; }
+      .nav-links { justify-content: center; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="#">Raíces Movement</a>
+    <ul class="nav-links">
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#walks">Walks</a></li>
+      <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#join">Join Us</a></li>
+      <li><a href="#safety">Safety</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="eyebrow">Caminatas Comunitarias &amp; Talleres Estacionales</div>
+      <h1>Raíces<br><span class="h1-italic">Movement</span></h1>
+      <p class="hero-tagline">Movimiento, cultura y conexión — paso a paso.<br>Movement, culture &amp; connection — one step at a time.</p>
+    </div>
+
+    <!-- LAUNCH BANNER -->
+    <div class="launch-banner">
+      <div class="launch-date">
+        <span>Lanzamiento · Launch Event</span>
+        Saturday, March 21, 2026
+      </div>
+      <div class="launch-detail">
+        8:00 AM<br>
+        La Mirada Creek Park Loop<br>
+        Rain or Shine · Lluvia o Sol
+      </div>
+    </div>
+
+    <!-- INFO STRIP -->
+    <div class="info-strip">
+      <div>
+        <div class="info-label">Schedule · Horario</div>
+        <div class="info-value">Every other Saturday · 8:00 AM</div>
+      </div>
+      <div>
+        <div class="info-label">Location · Lugar</div>
+        <div class="info-value">La Mirada Creek Park Loop</div>
+      </div>
+      <div>
+        <div class="info-label">Who's Welcome · Bienvenidos</div>
+        <div class="info-value">All ages, all paces, all abilities</div>
+      </div>
+      <div>
+        <div class="info-label">Bring · Trae</div>
+        <div class="info-value">Water, comfy shoes &amp; open heart</div>
+      </div>
+    </div>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <!-- MISSION -->
+    <section id="mission">
+      <div class="two-col">
+        <div>
+          <div class="section-label">Our Mission · Nuestra Misión</div>
+          <h2>We walk to <em>heal</em>, we connect to grow.</h2>
+          <p>Raíces Movement is a bilingual walking community rooted in wellness, connection, and reflection. We create a welcoming space where community members move their bodies, breathe fresh air, and share meaningful conversation — step by step, at their own pace.</p>
+          <p class="bilingual">Caminamos en armonía con la tierra, honrando la sabiduría ancestral y los ciclos de la naturaleza para crear un espacio de pertenencia.</p>
+        </div>
+        <div>
+          <div class="section-label">Our Story · Nuestra Historia</div>
+          <h2>Born from <em>community</em> care.</h2>
+          <p>Founded by two friends from Mexican backgrounds who dedicated their lives to serving the community, Raíces Movement was born from a desire to weave traditional wisdom, mindful movement, and community care into everyday life.</p>
+          <p class="bilingual">Cada caminata nos invita a desacelerar, sentir nuestros cuerpos y conectar — con nosotros mismos, con la tierra y con la comunidad.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAND ACKNOWLEDGMENT -->
+    <div class="land-block">
+      <div class="section-label" style="color: #2E4A30;">Reconocimiento de la Tierra · Land Acknowledgment</div>
+      <p>We gather on the ancestral lands of the Gabrielino-Tongva people. We honor their care for this land — past, present, and future. As we begin the Spring Equinox, we remember that the earth has long been here before us. May we walk with gratitude, awareness, and care.</p>
+      <p class="bilingual">Nos reunimos en las tierras ancestrales del pueblo Gabrielino-Tongva. Honramos su cuidado de esta tierra — pasado, presente y futuro. Caminemos con gratitud, conciencia y cuidado.</p>
+    </div>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <!-- WALKS -->
+    <section id="walks">
+      <div class="section-label">The Walk · El Sendero</div>
+      <h2>Seasonal <em>Themes</em> · Ciclos de Bienestar</h2>
+      <p>We align our walks and workshops with the natural rhythm of the earth, honoring our bodies and the cycles of nature.</p>
+      <div class="seasons-grid" style="margin-top: 28px;">
+        <div class="season-card winter">
+          <span class="season-symbol">❄</span>
+          <div class="season-name">Winter · Invierno</div>
+          <div class="season-theme">Rest &amp; Reflection<br>Escucha interna</div>
+        </div>
+        <div class="season-card spring">
+          <span class="season-symbol">🌱</span>
+          <div class="season-name">Spring · Primavera</div>
+          <div class="season-theme">Renewal &amp; Planting<br>Nuevos comienzos</div>
+        </div>
+        <div class="season-card summer">
+          <span class="season-symbol">☀</span>
+          <div class="season-name">Summer · Verano</div>
+          <div class="season-theme">Joy &amp; Expression<br>Energía comunitaria</div>
+        </div>
+        <div class="season-card fall">
+          <span class="season-symbol">🍂</span>
+          <div class="season-name">Fall · Otoño</div>
+          <div class="season-theme">Harvest &amp; Gratitude<br>Soltar y cosechar</div>
+        </div>
+      </div>
+
+      <!-- TRAIL ADVENTURE -->
+      <div class="adventure-block">
+        <h3>Choose Your Adventure · Elige Tu Camino</h3>
+        <p>The La Mirada Creek Park Loop is your canvas — take the gentle flat path or explore the optional steps, hills, and bridges. Every route leads back to the circle.</p>
+        <div class="adventure-options">
+          <div class="adventure-option">
+            <div class="adventure-option-title">Flat Loop · Nivel</div>
+            <p>Paved, mostly flat — fully accessible for strollers, wheelchairs, and all mobility levels.</p>
+          </div>
+          <div class="adventure-option">
+            <div class="adventure-option-title">Adventure Route · Aventura</div>
+            <p>Optional steps, hills, and bridges for those who want a little more terrain to explore.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- WALK FLOW -->
+      <div class="section-label">Walk Structure · El Orden</div>
+      <ul class="flow-list">
+        <li>
+          <div class="flow-time">8:00 AM</div>
+          <div>
+            <div class="flow-desc">Welcome &amp; Opening Circle · Bienvenida y Círculo</div>
+            <div class="flow-sub">Land acknowledgment + collective breath (10 min)</div>
+          </div>
+        </li>
+        <li>
+          <div class="flow-time">8:10 AM</div>
+          <div>
+            <div class="flow-desc">Seasonal Intention · Reflexión de Temporada</div>
+            <div class="flow-sub">Personal reflection and collective breath (5 min)</div>
+          </div>
+        </li>
+        <li>
+          <div class="flow-time">8:15 AM</div>
+          <div>
+            <div class="flow-desc">The Walk · La Caminata</div>
+            <div class="flow-sub">30–45 min · choose your path and pace · Todo cuenta!</div>
+          </div>
+        </li>
+        <li>
+          <div class="flow-time">9:00 AM</div>
+          <div>
+            <div class="flow-desc">Closing + Optional Workshop · Cierre y Taller</div>
+            <div class="flow-sub">Stretch, reflection, or short plática (15–20 min)</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <!-- WORKSHOPS -->
+    <section id="workshops">
+      <div class="quote-block">
+        <div class="quote-text">"Todos tenemos medicina que compartir."</div>
+        <div class="quote-attr">We all have medicine to share · Monthly community workshops</div>
+      </div>
+      <div class="two-col" style="margin-bottom: 0;">
+        <div>
+          <div class="section-label">Monthly Workshops · Talleres Mensuales</div>
+          <h2>Shared <em>wisdom</em>, shared healing.</h2>
+          <p>Once a month, following the walk, a community member leads a short 15–30 minute workshop. Workshops are led by rotating facilitators — neighbors, healers, therapists, artists, and storytellers.</p>
+        </div>
+        <div style="padding-top: 48px;">
+          <h3 style="color: var(--terra-dark); margin-top: 0;">Example Topics</h3>
+          <p style="font-size: 14px;">Herbal &amp; ancestral wisdom · Somatic grounding practices · Creative expression · Emotional wellness · Mindfulness &amp; atención plena · Storytelling &amp; narración</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <!-- JOIN -->
+    <section id="join">
+      <div class="committee-card">
+        <div class="section-label">Organizing Committee · Comité Comunitario</div>
+        <h2>Join our <em style="color: var(--terra-light);">circle of leadership.</em></h2>
+        <p>We are forming a small committee of 4–5 volunteers who share our values of wellness, cultura, and collective leadership. Help us sustain and grow the Raíces Movement circle.</p>
+        <ul class="committee-list">
+          <li><div class="dot"></div><div>Welcome new participants and support event logistics</div></li>
+          <li><div class="dot"></div><div>Co-create monthly themes, plática, and workshops</div></li>
+          <li><div class="dot"></div><div>Outreach &amp; partnerships with local organizations</div></li>
+          <li><div class="dot"></div><div>~3–4 hours per month · biweekly walks + one planning meeting</div></li>
+        </ul>
+        <p class="committee-note">Values: ancestral wisdom · shared leadership · radical inclusion.</p>
+      </div>
+    </section>
+
+    <!-- SAFETY -->
+    <section id="safety">
+      <div class="section-label" style="margin-bottom: 20px;">Safety &amp; Accessibility · Seguridad y Accesibilidad</div>
+      <div class="safety-grid">
+        <div class="safety-card">
+          <div class="safety-title">Trail · Sendero</div>
+          <p>Paved flat loop for strollers, wheelchairs &amp; all mobility levels. Optional steps, hills &amp; bridges for those who want to explore.</p>
+        </div>
+        <div class="safety-card">
+          <div class="safety-title">No One Left Behind · Nadie se Queda Atrás</div>
+          <p>A Sweep volunteer always walks at the back of the group to ensure everyone returns safely.</p>
+        </div>
+        <div class="safety-card">
+          <div class="safety-title">Weather · Clima</div>
+          <p>Rain or Shine. Extreme heat (95°F+) or lightning: shortened shaded circle or reschedule via community chat.</p>
+        </div>
+        <div class="safety-card">
+          <div class="safety-title">Furry Friends · Mascotas</div>
+          <p>Leashed, friendly dogs are welcome. Please ensure they are comfortable in groups.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-principle">Caminamos al ritmo de la tierra, honrando nuestros cuerpos y nuestra comunidad.</div>
+      <div class="footer-sub" style="margin-top: 8px;">We walk in rhythm with the earth, honoring our bodies and our community.</div>
+      <div class="footer-sub" style="margin-top: 16px; color: var(--terra);">Raíces Movement · La Mirada Creek Park · Every Other Saturday · 8:00 AM</div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
