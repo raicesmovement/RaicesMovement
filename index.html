@@ -412,6 +412,44 @@
     .footer-sub { font-size: 16px; color: #B0A8D8; }
     .footer-info { font-size: 14px; color: var(--sol-lt); margin-top: 20px; letter-spacing: 0.05em; }
 
+    /* FOUNDERS */
+    .founders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 36px;
+      margin-bottom: 8px;
+    }
+    .founder-card { text-align: center; }
+    .founder-img-wrap {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 20px;
+      border: 4px solid var(--tierra-lt);
+      box-shadow: 0 4px 24px rgba(107,45,14,0.15);
+    }
+    .founder-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .founder-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .founder-title {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      color: var(--viento);
+      font-style: italic;
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -441,6 +479,7 @@
       <li><a href="#mission">Mission</a></li>
       <li><a href="#walks">Walks</a></li>
       <li><a href="#workshops">Workshops</a></li>
+      <li><a href="#quienes">Quiénes Somos</a></li>
       <li><a href="#join">Tejedores</a></li>
       <li><a href="#safety">Safety</a></li>
     </ul>
@@ -630,6 +669,33 @@
         <div style="padding-top:52px;">
           <h3 style="color:var(--tierra); margin-top:0;">Offerings from the Circle</h3>
           <p>Herbal &amp; ancestral wisdom · Somatic grounding · Creative expression · Emotional wellness · Mindfulness &amp; atención plena · Storytelling &amp; narración</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-glyph">✦</div><div class="divider-line"></div></div>
+
+    <!-- QUIENES SOMOS -->
+    <section id="quienes">
+      <span class="section-label">Quiénes Somos · Who We Are</span>
+      <h2>The <em>hands</em> that tend the circle.</h2>
+      <p>Raíces Movement was cultivated by two friends from Mexican backgrounds who have dedicated their lives to serving the community. We believe wellness is cultural, movement is healing, and every person carries something sacred to share.</p>
+      <div class="founders-grid">
+        <div class="founder-card">
+          <div class="founder-img-wrap">
+            <img src="marisela.jpeg" alt="Marisela, Community Cultivator and co-founder of Raíces Movement" />
+          </div>
+          <div class="founder-name">Marisela</div>
+          <div class="founder-title">Community Cultivator · Cultivadora Comunitaria</div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-img-wrap">
+            <img src="wendy.jpeg" alt="Wendy, Community Cultivator and co-founder of Raíces Movement" />
+          </div>
+          <div class="founder-name">Wendy</div>
+          <div class="founder-title">Community Cultivator · Cultivadora Comunitaria</div>
         </div>
       </div>
     </section>
