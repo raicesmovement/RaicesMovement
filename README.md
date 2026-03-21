@@ -1,4 +1,6 @@
-## Hi there 👋 🔭 I’m currently working on an update
+## 🌎 Building Raíces Movement — a bilingual walking community rooted in wellness, cultura, and ancestral wisdom. La Mirada, CA.
+
+
 
 <!--
 **raicesmovement/RaicesMovement** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
