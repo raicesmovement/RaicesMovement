@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walk Log · Raíces Movement</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --tierra: #6B2D0E; --tierra-lt: #A84E28; --tierra-bg: #F5EAD8;
+      --viento: #2A5020; --viento-lt: #447A32; --viento-bg: #E4EFE0;
+      --sol: #7A5000; --sol-lt: #B87A10; --sol-bg: #FDF5DC;
+      --fuego: #8A2808; --fuego-bg: #FDECEA;
+      --agua: #1A4A5C; --agua-lt: #2E7A90; --agua-bg: #E0F0F4;
+      --luna: #3A3060; --luna-bg: #EEEAF8;
+      --parchment: #F4ECD8; --parchment-dk: #E6D8C0;
+      --ink: #1C1008; --ink-mid: #3C2414; --ink-lt: #6A4828;
+      --rule: #CDB890;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--parchment); font-family: 'Lora', Georgia, serif; font-size: 17px; color: var(--ink-mid); line-height: 1.8; }
+    .page { max-width: 700px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    /* HEADER */
+    .header { text-align: center; margin-bottom: 32px; }
+    .header-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tierra-lt); margin-bottom: 10px; }
+    .header-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--tierra); line-height: 1; margin-bottom: 6px; }
+    .header-title em { font-style: italic; color: var(--tierra-lt); }
+    .header-sub { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: var(--ink-lt); margin-bottom: 4px; }
+    .facilitator-note {
+      display: inline-block; background: var(--viento); color: #E4EFE0;
+      font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 20px; margin-top: 12px;
+    }
+
+    /* PROGRESS BAR */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-steps { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .progress-step { font-size: 12px; color: var(--ink-lt); text-align: center; flex: 1; }
+    .progress-step.active { color: var(--tierra); font-weight: 500; }
+    .progress-step.done { color: var(--viento); }
+    .progress-bar { height: 4px; background: var(--parchment-dk); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--tierra); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+
+    /* CARDS */
+    .card { border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; }
+    .card.tierra { background: var(--tierra-bg); border: 2px solid var(--tierra-lt); }
+    .card.viento { background: var(--viento-bg); border: 2px solid var(--viento-lt); }
+    .card.sol    { background: var(--sol-bg);    border: 2px solid var(--sol-lt); }
+    .card.agua   { background: var(--agua-bg);   border: 2px solid var(--agua-lt); }
+    .card.luna   { background: var(--luna-bg);   border: 2px solid #6058A0; }
+    .card.fuego  { background: var(--fuego-bg);  border: 2px solid var(--fuego); }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700;
+      margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .card.tierra .card-title { color: var(--tierra); }
+    .card.viento .card-title { color: var(--viento); }
+    .card.sol    .card-title { color: var(--sol); }
+    .card.agua   .card-title { color: var(--agua); }
+    .card.luna   .card-title { color: var(--luna); }
+    .card.fuego  .card-title { color: var(--fuego); }
+
+    /* FIELDS */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label {
+      display: block; font-size: 12px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-lt); margin-bottom: 5px;
+    }
+    .field-hint { font-size: 13px; font-style: italic; color: var(--ink-lt); letter-spacing: 0; text-transform: none; font-weight: 400; display: block; margin-bottom: 6px; }
+    input[type="text"], input[type="date"], input[type="number"], input[type="time"], select, textarea {
+      width: 100%; padding: 9px 12px;
+      background: white; border: 1.5px solid var(--rule);
+      border-radius: 8px; font-family: 'Lora', serif; font-size: 16px;
+      color: var(--ink); transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--tierra-lt);
+      box-shadow: 0 0 0 3px rgba(168,78,40,0.1);
+    }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236A4828' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      padding-right: 34px; appearance: none;
+    }
+
+    /* ENERGY CHIPS */
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 6px 14px; border-radius: 20px; font-size: 14px; cursor: pointer;
+      border: 1.5px solid var(--rule); background: white; color: var(--ink-mid);
+      transition: all 0.15s; user-select: none;
+    }
+    .chip.selected { background: var(--tierra); border-color: var(--tierra); color: white; }
+
+    /* RATING */
+    .rating-group { display: flex; gap: 10px; }
+    .rating-btn {
+      flex: 1; padding: 8px 4px; border-radius: 8px; font-size: 13px; text-align: center;
+      border: 1.5px solid var(--rule); background: white; color: var(--ink-mid);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .rating-btn.selected.low  { background: var(--fuego-bg); border-color: var(--fuego); color: var(--fuego); }
+    .rating-btn.selected.mid  { background: var(--sol-bg);   border-color: var(--sol-lt); color: var(--sol); }
+    .rating-btn.selected.high { background: var(--viento-bg); border-color: var(--viento-lt); color: var(--viento); }
+
+    /* SUBMIT */
+    .submit-wrap { text-align: center; margin-top: 28px; }
+    .submit-btn {
+      background: var(--tierra); color: var(--parchment);
+      font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700;
+      padding: 14px 44px; border: none; border-radius: 10px;
+      cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s; width: 100%;
+    }
+    .submit-btn:hover { background: var(--tierra-lt); }
+    .timer-note { font-size: 13px; color: var(--ink-lt); font-style: italic; margin-top: 10px; }
+
+    /* SUCCESS */
+    .success-state { display: none; text-align: center; background: var(--viento-bg); border: 2px solid var(--viento-lt); border-radius: 14px; padding: 40px 28px; margin-top: 20px; }
+    .success-state.visible { display: block; }
+    .success-glyph { font-size: 36px; margin-bottom: 12px; }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--viento); margin-bottom: 6px; }
+    .success-sub { font-size: 15px; color: var(--viento); font-style: italic; margin-bottom: 20px; }
+
+    /* SUMMARY */
+    .summary-box { background: white; border: 1.5px solid var(--rule); border-radius: 10px; padding: 20px; margin-top: 16px; font-size: 14px; white-space: pre-wrap; font-family: monospace; color: var(--ink-mid); line-height: 1.7; text-align: left; display: none; }
+    .summary-box.visible { display: block; }
+    .action-row { display: flex; gap: 10px; margin-top: 14px; justify-content: center; flex-wrap: wrap; }
+    .action-btn { padding: 9px 22px; border-radius: 8px; font-family: 'Lora', serif; font-size: 14px; cursor: pointer; border: none; transition: background 0.2s; }
+    .copy-btn  { background: var(--viento); color: white; }
+    .copy-btn:hover  { background: var(--viento-lt); }
+    .reset-btn { background: var(--parchment-dk); color: var(--ink-mid); border: 1.5px solid var(--rule); }
+    .reset-btn:hover { background: var(--rule); }
+
+    @media (max-width: 560px) {
+      .field-row { grid-template-columns: 1fr; }
+      .card { padding: 18px 18px; }
+      .header-title { font-size: 34px; }
+      .rating-btn { font-size: 12px; padding: 7px 2px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-eyebrow">Facilitator Log · Internal Use Only</div>
+    <div class="header-title">Raíces <em>Movement</em></div>
+    <div class="header-sub">Walk Documentation · Registro de Caminata</div>
+    <div class="facilitator-note">🌿 For Wendy &amp; Marisela · Fill out independently after each walk</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="progress-step active" id="step1">Basics</div>
+      <div class="progress-step" id="step2">The Walk</div>
+      <div class="progress-step" id="step3">People</div>
+      <div class="progress-step" id="step4">Reflection</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <form id="walkForm">
+
+    <!-- CARD 1: BASICS -->
+    <div class="card tierra">
+      <div class="card-title">🌎 The Basics</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Your name</label>
+          <select id="facilitatorName">
+            <option value="">Select</option>
+            <option>Wendy</option>
+            <option>Marisela</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Today's date</label>
+          <input type="date" id="date" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Walk number</label>
+          <span class="field-hint">How many walks have we done total?</span>
+          <input type="number" id="walkNum" min="1" placeholder="e.g. 1" />
+        </div>
+        <div class="field">
+          <label>Season</label>
+          <select id="season">
+            <option value="">Select</option>
+            <option>Spring · Primavera</option>
+            <option>Summer · Verano</option>
+            <option>Fall · Otoño</option>
+            <option>Winter · Invierno</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>People who showed up</label>
+          <span class="field-hint">Your best count, including yourselves</span>
+          <input type="number" id="totalAttend" min="0" placeholder="0" />
+        </div>
+        <div class="field">
+          <label>New faces today</label>
+          <span class="field-hint">First time at Raíces Movement</span>
+          <input type="number" id="newFaces" min="0" placeholder="0" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Weather</label>
+        <span class="field-hint">Sunny, cloudy, warm, breezy — whatever stood out</span>
+        <input type="text" id="weather" placeholder="e.g. Sunny and warm, light breeze" />
+      </div>
+    </div>
+
+    <!-- CARD 2: THE WALK -->
+    <div class="card sol">
+      <div class="card-title">☀ The Walk</div>
+
+      <div class="field">
+        <label>How did the walk feel overall?</label>
+        <span class="field-hint">Pick your honest read of the group's energy</span>
+        <div class="rating-group" style="margin-top: 8px;">
+          <div class="rating-btn low"  onclick="selectRating(this, 'low')">Low energy<br>Poca energía</div>
+          <div class="rating-btn mid"  onclick="selectRating(this, 'mid')">Steady flow<br>Flujo estable</div>
+          <div class="rating-btn high" onclick="selectRating(this, 'high')">Full of life<br>Llena de vida</div>
+        </div>
+        <input type="hidden" id="walkEnergy" />
+      </div>
+
+      <div class="field" style="margin-top:16px;">
+        <label>Words that describe today's energy</label>
+        <span class="field-hint">Select all that feel true</span>
+        <div class="chip-group" id="energyChips" style="margin-top:8px;">
+          <div class="chip" onclick="toggleChip(this)">Joyful · Alegre</div>
+          <div class="chip" onclick="toggleChip(this)">Peaceful · En paz</div>
+          <div class="chip" onclick="toggleChip(this)">Connected · Conectados</div>
+          <div class="chip" onclick="toggleChip(this)">Reflective · Reflexivo</div>
+          <div class="chip" onclick="toggleChip(this)">Playful · Juguetón</div>
+          <div class="chip" onclick="toggleChip(this)">Tender · Tierno</div>
+          <div class="chip" onclick="toggleChip(this)">Slow · Tranquilo</div>
+          <div class="chip" onclick="toggleChip(this)">Vibrant · Vibrante</div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:16px;">
+        <label>One moment that stood out</label>
+        <span class="field-hint">A conversation, a laugh, something someone said or did — whatever stayed with you</span>
+        <textarea id="moment" placeholder="Write it while it's fresh..."></textarea>
+      </div>
+    </div>
+
+    <!-- CARD 3: PEOPLE -->
+    <div class="card agua">
+      <div class="card-title">💧 The People</div>
+
+      <div class="field">
+        <label>New people — who came for the first time?</label>
+        <span class="field-hint">First name is fine. What brought them? What were they curious about?</span>
+        <textarea id="newPeople" placeholder="e.g. Rosa — heard about us from a neighbor, interested in the workshops. Brought her daughter."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Anyone interested in becoming a tejedorx?</label>
+        <span class="field-hint">Someone who wants to help grow the circle</span>
+        <textarea id="tejedorxs" placeholder="Names and what they said..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Anyone interested in facilitating an offering?</label>
+        <span class="field-hint">A skill, story, or gift they mentioned wanting to share</span>
+        <textarea id="facilitators" placeholder="Names and what they'd like to offer..."></textarea>
+      </div>
+    </div>
+
+    <!-- CARD 4: REFLECTION -->
+    <div class="card viento">
+      <div class="card-title">🌬 Reflection</div>
+
+      <div class="field">
+        <label>What worked well today?</label>
+        <span class="field-hint">Something to keep doing or build on</span>
+        <textarea id="worked" placeholder="What felt good, easy, or alive?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>What would you do differently?</label>
+        <span class="field-hint">No judgment — just honest notes for next time</span>
+        <textarea id="differently" placeholder="What felt off, rushed, or incomplete?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Follow-up needed before the next walk</label>
+        <span class="field-hint">People to reach out to, things to prepare, ideas to explore</span>
+        <textarea id="followup" placeholder="e.g. Text Rosa, look into herbalism facilitator, bring more water sign-up sheets"></textarea>
+      </div>
+    </div>
+
+    <!-- CARD 5: QUICK NOTES (OPTIONAL) -->
+    <div class="card luna">
+      <div class="card-title">🌙 Anything else? <span style="font-size:14px; font-weight:400; font-style:italic; margin-left:4px;">— optional</span></div>
+      <div class="field">
+        <span class="field-hint">A feeling, a seed of an idea, something the walk stirred in you as a facilitator</span>
+        <textarea id="extra" placeholder="Space for whatever didn't fit above..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn">Save &amp; Generate Summary 🌿</button>
+      <div class="timer-note">Takes about 5 minutes · Toma unos 5 minutos</div>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-state" id="successState">
+    <div class="success-glyph">🌿</div>
+    <div class="success-title">Walk documented · Caminata registrada</div>
+    <div class="success-sub">Caminamos para sanar, conectamos para crecer.</div>
+    <div class="summary-box" id="summaryBox"></div>
+    <div class="action-row">
+      <button class="action-btn copy-btn" onclick="copyToClipboard()">Copy to clipboard · Copiar</button>
+      <button class="action-btn reset-btn" onclick="resetForm()">Log another walk · Nueva caminata</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleChip(el) { el.classList.toggle('selected'); updateProgress(); }
+
+  function selectRating(el, level) {
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected', 'low', 'mid', 'high'));
+    el.classList.add('selected', level);
+    document.getElementById('walkEnergy').value = el.textContent.replace(/\n/g, ' / ').trim();
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const fields = ['facilitatorName','date','totalAttend','walkEnergy'];
+    const filled = fields.filter(id => document.getElementById(id)?.value).length;
+    const pct = Math.min(100, Math.round((filled / fields.length) * 100));
+    document.getElementById('progressFill').style.width = pct + '%';
+    const steps = ['step1','step2','step3','step4'];
+    steps.forEach((s, i) => {
+      const el = document.getElementById(s);
+      el.className = 'progress-step' + (pct >= (i+1)*25 ? ' done' : i===0 ? ' active' : '');
+    });
+  }
+
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', updateProgress);
+    el.addEventListener('change', updateProgress);
+  });
+
+  document.getElementById('walkForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const get = id => document.getElementById(id)?.value?.trim() || '—';
+    const chips = [...document.querySelectorAll('#energyChips .chip.selected')].map(c => c.textContent).join(', ') || '—';
+    const name = get('facilitatorName');
+    const date = get('date');
+    const walkNum = get('walkNum');
+    const season = get('season');
+    const total = get('totalAttend');
+    const newF = get('newFaces');
+    const weather = get('weather');
+    const energy = get('walkEnergy');
+    const moment = get('moment');
+    const newPeople = get('newPeople');
+    const tejedorxs = get('tejedorxs');
+    const facilitators = get('facilitators');
+    const worked = get('worked');
+    const differently = get('differently');
+    const followup = get('followup');
+    const extra = get('extra');
+
+    const summary =
+`RAÍCES MOVEMENT — Walk Log
+Facilitator: ${name}
+${'─'.repeat(38)}
+
+🌎 BASICS
+Date: ${date}  |  Walk #: ${walkNum}  |  Season: ${season}
+Attendees: ${total}  |  New faces: ${newF}
+Weather: ${weather}
+
+☀ THE WALK
+Energy: ${energy}
+Vibe: ${chips}
+Moment that stood out:
+${moment}
+
+💧 THE PEOPLE
+New faces:
+${newPeople}
+
+tejedorx interest:
+${tejedorxs}
+
+Facilitator interest:
+${facilitators}
+
+🌬 REFLECTION
+What worked:
+${worked}
+
+What to do differently:
+${differently}
+
+Follow-up before next walk:
+${followup}
+
+🌙 EXTRA NOTES
+${extra}
+
+${'─'.repeat(38)}
+Caminamos para sanar, conectamos para crecer. 🌿`;
+
+    document.getElementById('summaryBox').textContent = summary;
+    document.getElementById('summaryBox').classList.add('visible');
+    document.getElementById('successState').classList.add('visible');
+    document.getElementById('walkForm').style.display = 'none';
+    document.getElementById('successState').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function copyToClipboard() {
+    const text = document.getElementById('summaryBox').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied! · ¡Copiado! ✓';
+      setTimeout(() => { btn.textContent = 'Copy to clipboard · Copiar'; }, 2500);
+    });
+  }
+
+  function resetForm() {
+    document.getElementById('walkForm').reset();
+    document.getElementById('walkForm').style.display = 'block';
+    document.getElementById('successState').classList.remove('visible');
+    document.getElementById('summaryBox').classList.remove('visible');
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected','low','mid','high'));
+    document.getElementById('walkEnergy').value = '';
+    document.getElementById('progressFill').style.width = '0%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
